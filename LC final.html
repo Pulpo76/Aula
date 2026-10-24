@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Flujo de Comercio Internacional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        /* Ocultar las flechas de incremento/decremento en los inputs numéricos */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* Estilos base para inputs */
+        .node-input {
+            transition: all 0.2s ease-in-out;
+        }
+        .node-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4 text-slate-800 flex flex-col items-center">
+
+    <div class="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        
+        <!-- Cabecera -->
+        <div class="bg-slate-800 text-white p-6 text-center">
+            <h1 class="text-3xl font-bold mb-2">Flujo de Comercio Internacional</h1>
+            <p class="text-slate-300 max-w-2xl mx-auto text-sm">
+                Completa los recuadros con las entidades correspondientes (Banco Corresponsal, Importador, Exportador, Banco Emisor) y asigna el orden numérico correcto en los círculos de las flechas.
+            </p>
+        </div>
+
+        <!-- Contenedor del Diagrama (Con Scroll horizontal para móviles) -->
+        <div class="w-full overflow-x-auto p-8 bg-slate-50 flex justify-center">
+            
+            <!-- Lienzo Fijo 1000x800 para alineación perfecta -->
+            <div class="relative w-[1000px] h-[800px] bg-white rounded-xl shadow-inner border border-slate-200 shrink-0">
+                
+                <!-- Capa SVG (Líneas y Flechas) -->
+                <svg width="1000" height="800" class="absolute inset-0 pointer-events-none">
+                    <defs>
+                        <!-- Puntas de Flecha -->
+                        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#64748b" />
+                        </marker>
+                    </defs>
+
+                    <!-- LÍNEAS SUPERIORES -->
+                    <line x1="280" y1="75" x2="720" y2="75" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+                    <line x1="280" y1="115" x2="720" y2="115" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- LÍNEAS INFERIORES -->
+                    <line x1="720" y1="685" x2="280" y2="685" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+                    <line x1="280" y1="710" x2="720" y2="710" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+                    <line x1="720" y1="735" x2="280" y2="735" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- LÍNEAS IZQUIERDA -->
+                    <line x1="100" y1="640" x2="100" y2="160" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+                    <line x1="150" y1="160" x2="150" y2="640" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+                    <line x1="200" y1="640" x2="200" y2="160" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- LÍNEAS DERECHA -->
+                    <line x1="800" y1="160" x2="800" y2="640" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+                    <line x1="850" y1="640" x2="850" y2="160" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+                    <line x1="900" y1="160" x2="900" y2="640" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+                </svg>
+
+                <!-- CAPA HTML (Inputs Interactivos) -->
+
+                <!-- 1. CAJAS (Entidades) -->
+                <input type="text" id="b1" class="node-input absolute left-[50px] top-[50px] w-[200px] h-[70px] bg-white border-2 border-slate-300 rounded-lg text-center font-bold text-sm text-slate-800 uppercase shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:normal-case" placeholder="Entidad...">
+                
+                <input type="text" id="b2" class="node-input absolute left-[750px] top-[50px] w-[200px] h-[70px] bg-white border-2 border-slate-300 rounded-lg text-center font-bold text-sm text-slate-800 uppercase shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:normal-case" placeholder="Entidad...">
+                
+                <input type="text" id="b3" class="node-input absolute left-[50px] top-[670px] w-[200px] h-[70px] bg-white border-2 border-slate-300 rounded-lg text-center font-bold text-sm text-slate-800 uppercase shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:normal-case" placeholder="Entidad...">
+                
+                <input type="text" id="b4" class="node-input absolute left-[750px] top-[670px] w-[200px] h-[70px] bg-white border-2 border-slate-300 rounded-lg text-center font-bold text-sm text-slate-800 uppercase shadow-sm placeholder:text-slate-300 placeholder:font-normal placeholder:normal-case" placeholder="Entidad...">
+
+                <!-- 2. CÍRCULOS (Números de Flujo) -->
+                <!-- Grupo Arriba -->
+                <input type="number" id="c_t1" class="node-input absolute left-[380px] top-[55px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+                <input type="number" id="c_t2" class="node-input absolute left-[580px] top-[95px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+
+                <!-- Grupo Izquierda -->
+                <input type="number" id="c_l1" class="node-input absolute left-[80px] top-[230px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+                <input type="number" id="c_l2" class="node-input absolute left-[130px] top-[380px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+                <input type="number" id="c_l3" class="node-input absolute left-[180px] top-[530px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+
+                <!-- Grupo Derecha -->
+                <input type="number" id="c_r1" class="node-input absolute left-[780px] top-[230px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+                <input type="number" id="c_r2" class="node-input absolute left-[830px] top-[380px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+                <input type="number" id="c_r3" class="node-input absolute left-[880px] top-[530px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+
+                <!-- Grupo Abajo -->
+                <input type="number" id="c_b1" class="node-input absolute left-[380px] top-[665px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+                <input type="number" id="c_b2" class="node-input absolute left-[480px] top-[690px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+                <input type="number" id="c_b3" class="node-input absolute left-[580px] top-[715px] w-[40px] h-[40px] bg-white border-2 border-slate-300 rounded-full text-center font-bold text-lg text-blue-700 shadow-md">
+
+            </div>
+        </div>
+
+        <!-- Controles y Resultados -->
+        <div class="p-8 border-t border-slate-200 flex flex-col items-center space-y-6">
+            <button onclick="calificar()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 text-lg">
+                Calificar Diagrama
+            </button>
+
+            <!-- Caja de Resultados (Oculta por defecto) -->
+            <div id="resultado-panel" class="hidden w-full max-w-2xl rounded-xl p-6 border-2 text-center transition-all">
+                <h2 id="res-titulo" class="text-2xl font-bold mb-4">Resultados</h2>
+                <div class="grid grid-cols-3 gap-4 text-lg font-semibold">
+                    <div class="flex flex-col bg-white/50 rounded-lg p-3">
+                        <span class="text-sm opacity-80 uppercase tracking-wider">Puntos</span>
+                        <span id="res-puntos" class="text-3xl mt-1">0/15</span>
+                    </div>
+                    <div class="flex flex-col bg-white/50 rounded-lg p-3">
+                        <span class="text-sm opacity-80 uppercase tracking-wider">Porcentaje</span>
+                        <span id="res-porcentaje" class="text-3xl mt-1">0%</span>
+                    </div>
+                    <div class="flex flex-col bg-white/50 rounded-lg p-3">
+                        <span class="text-sm opacity-80 uppercase tracking-wider">Nota Final</span>
+                        <span id="res-nota" class="text-3xl mt-1">0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        function calificar() {
+            // 1. Evaluar Cajas (4 puntos)
+            let cajasRequeridas = ["EXPORTADOR", "IMPORTADOR", "BANCO CORRESPONSAL", "BANCO EMISOR"];
+            let cajasUsuario = [
+                { el: document.getElementById('b1'), val: limpiarTexto(document.getElementById('b1').value) },
+                { el: document.getElementById('b2'), val: limpiarTexto(document.getElementById('b2').value) },
+                { el: document.getElementById('b3'), val: limpiarTexto(document.getElementById('b3').value) },
+                { el: document.getElementById('b4'), val: limpiarTexto(document.getElementById('b4').value) }
+            ];
+
+            let puntosCajas = 0;
+            
+            // Evaluamos iterando para asegurarnos de que cada caja marque verde si es correcta
+            cajasUsuario.forEach(caja => {
+                let index = cajasRequeridas.indexOf(caja.val);
+                if (index !== -1) {
+                    puntosCajas++;
+                    cajasRequeridas.splice(index, 1); // Evitar que la misma palabra sume dos veces
+                    marcarCorrecto(caja.el);
+                } else {
+                    marcarIncorrecto(caja.el);
+                }
+            });
+
+            // 2. Evaluar Círculos (11 puntos)
+            const respuestasCirculos = {
+                'c_t1': '1', 'c_t2': '5',                 // Arriba
+                'c_l1': '11', 'c_l2': '6', 'c_l3': '4',   // Izquierda
+                'c_r1': '2', 'c_r2': '8', 'c_r3': '9',    // Derecha
+                'c_b1': '3', 'c_b2': '7', 'c_b3': '10'    // Abajo
+            };
+
+            let puntosCirculos = 0;
+
+            for (const [id, respuestaCorrecta] of Object.entries(respuestasCirculos)) {
+                let elemento = document.getElementById(id);
+                if (elemento.value.trim() === respuestaCorrecta) {
+                    puntosCirculos++;
+                    marcarCorrecto(elemento);
+                } else {
+                    marcarIncorrecto(elemento);
+                }
+            }
+
+            // 3. Cálculos de Nota Final
+            let puntosTotales = puntosCajas + puntosCirculos;
+            let porcentaje = (puntosTotales / 15) * 100;
+            let nota = 0;
+
+            // Sistema de evaluación proporcionado:
+            // >= 60% formula: (0.15 * porcentaje) - 5
+            if (porcentaje >= 60) {
+                nota = (0.15 * porcentaje) - 5;
+            } else {
+                // Cálculo proporcional si es menor a 60% (asumiendo que 0% es 0 y 60% es 4.0)
+                nota = porcentaje * (4.0 / 60); 
+            }
+
+            mostrarResultados(puntosTotales, Math.round(porcentaje), nota.toFixed(2));
+        }
+
+        function limpiarTexto(texto) {
+            return texto.trim().toUpperCase().replace(/\s+/g, ' '); // Elimina espacios dobles y pasa a mayúscula
+        }
+
+        function marcarCorrecto(elemento) {
+            elemento.classList.remove('border-slate-300', 'border-red-500', 'bg-red-50');
+            elemento.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-700');
+        }
+
+        function marcarIncorrecto(elemento) {
+            elemento.classList.remove('border-slate-300', 'border-emerald-500', 'bg-emerald-50');
+            elemento.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-700');
+        }
+
+        function mostrarResultados(puntos, porcentaje, nota) {
+            const panel = document.getElementById('resultado-panel');
+            const tit = document.getElementById('res-titulo');
+            
+            document.getElementById('res-puntos').innerText = `${puntos}/15`;
+            document.getElementById('res-porcentaje').innerText = `${porcentaje}%`;
+            document.getElementById('res-nota').innerText = nota;
+
+            // Mostrar el panel
+            panel.classList.remove('hidden');
+
+            let notaFinal = parseFloat(nota);
+
+            if (notaFinal === 10) {
+                // Estilo especial para nota perfecta
+                panel.className = "w-full max-w-2xl rounded-xl p-6 border-2 text-center transition-all transform scale-105 shadow-xl border-amber-500 bg-amber-100 text-amber-900";
+                tit.innerText = "¡Un genio!";
+                
+                // Reproductor de audio base64
+                // Nota: Asegúrate de que el base64 tenga el formato correcto para archivos m4a/mp4, por ejemplo:
+                // "data:audio/mp4;base64,TU_CÓDIGO_LARGO_AQUÍ"
+                const audioBase64 = "GENIO";
+                try {
+                    let audioEasterEgg = new Audio(audioBase64);
+                    audioEasterEgg.play();
+                } catch(e) {
+                    console.log("Error al reproducir el audio: ", e);
+                }
+            }
+            // Estilizar según aprobación (Aprobado >= 4.0)
+            else if (notaFinal >= 4.0) {
+                panel.className = "w-full max-w-2xl rounded-xl p-6 border-2 text-center transition-all border-emerald-500 bg-emerald-100 text-emerald-900";
+                tit.innerText = "¡Aprobado! Excelente trabajo";
+            } else {
+                panel.className = "w-full max-w-2xl rounded-xl p-6 border-2 text-center transition-all border-rose-500 bg-rose-100 text-rose-900";
+                tit.innerText = "Reprobado. Inténtalo de nuevo";
+            }
+        }
+    </script>
+</body>
+</html>
